@@ -31,7 +31,8 @@ class search_handler(HandlerBase):
         title_list = []
 
         for case_id in case_id_list:
-            res = Data.find('case_info',[('id','=',case_id)])
+            res = Data.find('case_info',[('id','=',case_id),('is_show','=',1)])
+            # 需要能显示的才可以看
             if res == None:
                 continue
             else:

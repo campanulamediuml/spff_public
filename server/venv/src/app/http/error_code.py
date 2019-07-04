@@ -5,6 +5,9 @@ ERROR_CODE = {
     'ACCOUNT_NOT_HAD': (10003, '账号不存在'),
     'PW_NOT_SAME': (10004, '两次输入密码不同'),
     'NO_TOKEN': (10005, '没有提供邀请者的token'),
+    'TOKEN_ERROR': (10006, 'token错误'),
+    'AUTH_ERROR': (10007, '权限错误'),
+
 
 
 

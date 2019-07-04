@@ -22,7 +22,6 @@ class login_handler(HandlerBase):
                 'token':token
             }
             Data.update('user',condition,result)
-
             self.send_ok(result)
             return
 

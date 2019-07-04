@@ -50,3 +50,4 @@ class search_by_case_id(HandlerBase):
                 result.append(line['post_item'])
 
         return result
+    
