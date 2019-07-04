@@ -95,3 +95,13 @@ GET
 }
 
 // 根据事件id查询某个具体事件
+
+
+
+/REQ_BLOCK
+GET
+url附带token=
+{
+    'case_id':0
+}
+// 屏蔽某个案例，需要权限
