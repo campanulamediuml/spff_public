@@ -51,3 +51,5 @@ class search_handler(HandlerBase):
 
         self.send_ok(result)
         return
+
+    # 根据关键词进行搜索           

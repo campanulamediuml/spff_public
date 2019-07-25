@@ -3,6 +3,7 @@ from app.data.base_method.Scheduler import IntervalTask
 import os
 
 class Base(object):
+    # 默认值为[]会出问题
 
     def __init__(self, host, user, psw, dbname):
         self._host = host

@@ -7,6 +7,7 @@ GET
     nickname:''
     invite_token:'' --需要邀请者的token
 }
+
 {
     token:''
 }
@@ -24,6 +25,19 @@ GET
     token:''
 }
 // 登录
+
+
+/REQ_CHANGE_PW
+url附带token=
+GET
+{
+    pw1:''
+    pw2:''
+               //新的密码需要输入两次
+    pw_old:''  //旧的密码
+}
+
+//修改密码
 
 
 /REQ_UPLOAD

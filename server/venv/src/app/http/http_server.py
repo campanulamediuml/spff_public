@@ -11,6 +11,7 @@ from app.http.handlers.search import search_handler
 from app.http.handlers.search_time import search_by_time_handler
 from app.http.handlers.search_by_case_id import search_by_case_id
 from app.http.handlers.block_info import block_info
+from app.http.handlers.change_pw import change_pw
 
 
 
@@ -32,6 +33,7 @@ class HttpServer(ServerBase):
             (r'/REQ_SEARCH_BY_TIME',search_by_time_handler),
             (r'/REQ_SEARCH_BY_CASE_ID',search_by_case_id),
             (r'/REQ_BLOCK',block_info),
+            (r'/REQ_CHANGE_PW',change_pw),
         ]
 
         # route.extend(self.register_handles_test())

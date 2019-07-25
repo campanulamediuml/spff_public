@@ -41,4 +41,4 @@ def update_post_items():
         Data.update('case_post_item',[('id','=',line['id'])],{'raw_url':line['post_item']})
     return
 
-update_post_items()
+# update_post_items()

@@ -18,10 +18,7 @@ class HandlerBase(RequestHandler):
         self.set_header('Access-Control-Allow-Headers', '*')
 
     def get_result(self):
-        '''
-        返回结构基本模板
-        :return:
-        '''
+        # 返回基本模板
         result = {}
         result['status'] = 0
         result['msg'] = ''
@@ -29,10 +26,7 @@ class HandlerBase(RequestHandler):
         return result
 
     def get_user_base(self):
-        '''
-        获取用户基本信息
-        :return:
-        '''
+        # 返回用户基本信息
         token = self.get_argument('token')
         # print(token)
         conditions = []
@@ -52,21 +46,13 @@ class HandlerBase(RequestHandler):
 
 
     def send_ok(self, data = {}):
-        '''
-        正确信息返回
-        :param data:
-        :return:
-        '''
+        # 返回正确信息
         result = self.get_result()
         result['data'] = data
         self.write(result)
 
     def send_faild(self, code):
-        '''
-        失败信息返回
-        :param code:
-        :return:
-        '''
+        # 返回失败信息
         result = self.get_result()
         unit = ERROR_CODE[code]
         result['status'] = unit[0]
@@ -74,10 +60,7 @@ class HandlerBase(RequestHandler):
         self.write(json.dumps(result))
 
     def get_data(self):
-        '''
-        获取请求内容
-        :return:
-        '''
+        # 获取请求内容
         data = self.get_argument('data')
         res = json.loads(data)
         return res
@@ -90,7 +73,6 @@ class HandlerBase(RequestHandler):
     def get_token(self,res):
 
         # 生成该用户的token
-
         uuid_string = str(res['uuid'])
         user_id_string = str(res['id'])
         username_string = str(res['user_name'])

@@ -27,6 +27,8 @@ class sign_up_handler(HandlerBase):
             self.send_faild('NO_TOKEN')
             return 
 
+        # 邀请码处理
+
         params = {
             'user_name':data['username'],
             'passwd':common.get_md5(data['pw2']),
@@ -58,6 +60,8 @@ class sign_up_handler(HandlerBase):
 
         self.send_ok(result)
         return 
+
+    # 注册
 
 
 
