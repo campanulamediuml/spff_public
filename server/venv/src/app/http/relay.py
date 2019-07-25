@@ -11,7 +11,8 @@ class Relay(object):
     @staticmethod
     def init(server):
         Relay.server = server
-        _initial_split_word = list(jieba.cut_for_search('服务器操作'))
+        _initial_split_word = list(jieba.cut_for_search('server_execute'))
+        print('init split word execute')
         Relay.is_any_user()
         # 创建初始用户
 
@@ -33,7 +34,7 @@ class Relay(object):
         }
 
         Data.insert('user',params)
-        print('插入初始用户')
+        print('insert_init_user')
 
 
 
