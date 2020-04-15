@@ -1,11 +1,8 @@
 ﻿##短连接
 
 客户端向服务端请求包：
-REQ_xxx
-data={
-    
-}
-&token=
+全部为POST接口，数据应当放在body内，通过json字典结构进行请求
+token放在请求头的token字段内
 
 
 服务端 响应请求包：

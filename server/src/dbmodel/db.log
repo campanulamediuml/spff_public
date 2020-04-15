@@ -1,0 +1,104 @@
+[2020-03-26 16:29:49]----------process:/Users/JingjingHe/PycharmProjects/DYS_frame/dbmodel/model.py
+    数据库模块连接成功
+[2020-03-26 16:29:49]----------process:/Users/JingjingHe/PycharmProjects/DYS_frame/dbmodel/model.py
+    drop table admin
+    数据库查询出错
+    (1051, "Unknown table 'dys_data.admin'")
+[2020-03-26 16:29:49]----------process:/Users/JingjingHe/PycharmProjects/DYS_frame/dbmodel/model.py
+    drop table player
+    数据库查询出错
+    (1051, "Unknown table 'dys_data.player'")
+[2020-03-26 16:29:49]----------process:/Users/JingjingHe/PycharmProjects/DYS_frame/dbmodel/model.py
+    drop table admin_temp
+    数据库查询出错
+    (1051, "Unknown table 'dys_data.admin_temp'")
+[2020-03-26 16:29:49]----------process:/Users/JingjingHe/PycharmProjects/DYS_frame/dbmodel/model.py
+    drop table admin_auth
+    数据库查询出错
+    (1051, "Unknown table 'dys_data.admin_auth'")
+[2020-03-26 16:29:49]----------process:/Users/JingjingHe/PycharmProjects/DYS_frame/dbmodel/model.py
+    drop table admin_operate_record
+    数据库查询出错
+    (1051, "Unknown table 'dys_data.admin_operate_record'")
+[2020-03-26 16:41:28]----------process:/Users/JingjingHe/PycharmProjects/DYS_frame/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-12 00:30:39]----------process:/Users/JingjingHe/PycharmProjects/campanula/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-12 00:30:39]----------process:/Users/JingjingHe/PycharmProjects/campanula/dbmodel/model.py
+    drop table admin
+    数据库查询出错
+    (1051, "Unknown table 'campanula.admin'")
+[2020-04-12 00:30:39]----------process:/Users/JingjingHe/PycharmProjects/campanula/dbmodel/model.py
+    drop table player
+    数据库查询出错
+    (1051, "Unknown table 'campanula.player'")
+[2020-04-12 00:30:40]----------process:/Users/JingjingHe/PycharmProjects/campanula/dbmodel/model.py
+    drop table admin_temp
+    数据库查询出错
+    (1051, "Unknown table 'campanula.admin_temp'")
+[2020-04-12 00:30:40]----------process:/Users/JingjingHe/PycharmProjects/campanula/dbmodel/model.py
+    drop table admin_auth
+    数据库查询出错
+    (1051, "Unknown table 'campanula.admin_auth'")
+[2020-04-12 00:30:40]----------process:/Users/JingjingHe/PycharmProjects/campanula/dbmodel/model.py
+    drop table admin_operate_record
+    数据库查询出错
+    (1051, "Unknown table 'campanula.admin_operate_record'")
+[2020-04-13 23:09:54]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-13 23:09:54]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table admin
+    数据库查询出错
+    (1051, "Unknown table 'spff.admin'")
+[2020-04-13 23:09:54]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table player
+    数据库查询出错
+    (1051, "Unknown table 'spff.player'")
+[2020-04-13 23:09:54]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table admin_temp
+    数据库查询出错
+    (1051, "Unknown table 'spff.admin_temp'")
+[2020-04-13 23:09:54]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table admin_auth
+    数据库查询出错
+    (1051, "Unknown table 'spff.admin_auth'")
+[2020-04-13 23:09:54]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table admin_operate_record
+    数据库查询出错
+    (1051, "Unknown table 'spff.admin_operate_record'")
+[2020-04-13 23:29:50]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-13 23:29:50]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    create table case_info(id int AUTO_INCREMENT primary key ,user_id int default "0" ,c_time int default "0" ,content text default "" ,is_show int default "1" ,content_md5 varchar(128) default "" )
+    数据库查询出错
+    (1101, "BLOB, TEXT, GEOMETRY or JSON column 'content' can't have a default value")
+[2020-04-13 23:29:50]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    create table case_info(id int AUTO_INCREMENT primary key ,case_id int default "0" ,keyword varchar(4096) default "" ,keyword_md5 int default "0" )
+    数据库查询出错
+    (1050, "Table 'case_info' already exists")
+[2020-04-13 23:30:32]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-13 23:30:33]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    create table case_info(id int AUTO_INCREMENT primary key ,user_id int default "0" ,c_time int default "0" ,content text default "" ,is_show int default "1" ,content_md5 varchar(128) default "" )
+    数据库查询出错
+    (1101, "BLOB, TEXT, GEOMETRY or JSON column 'content' can't have a default value")
+[2020-04-13 23:30:33]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table case_post_item
+    数据库查询出错
+    (1051, "Unknown table 'spff.case_post_item'")
+[2020-04-13 23:30:33]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table case_search_index
+    数据库查询出错
+    (1051, "Unknown table 'spff.case_search_index'")
+[2020-04-13 23:30:49]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-13 23:30:49]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    drop table case_info
+    数据库查询出错
+    (1051, "Unknown table 'spff.case_info'")
+[2020-04-13 23:30:56]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-13 23:57:19]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    数据库模块连接成功
+[2020-04-13 23:59:46]----------process:/Users/JingjingHe/Desktop/spff/server/src/dbmodel/model.py
+    数据库模块连接成功

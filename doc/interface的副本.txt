@@ -1,0 +1,117 @@
+登录
+/admin/login
+{
+    'username':''
+    'pswd':''
+}
+返回值
+{
+    token:''
+}
+
+
+
+退出登录
+/admin/logout
+{}
+返回值
+{}
+
+
+修改密码
+需要登录
+/admin/changepw
+{
+    pw_1:''
+    pw_2:''
+               //新的密码需要输入两次
+    pw_old:''  //旧的密码
+}
+
+提交数据
+需要登录
+/admin/upload
+{
+    title:''
+    content:''
+    event_time:'YYYY-MM-DD'
+    post_items:[
+        '',
+        ''//附件，为相关图片url，目前仅支持jpg、jpeg、gif
+    ]
+}
+返回值
+{}
+
+
+屏蔽某个案例
+需要登录
+/admin/block
+{
+    'case_id':0
+}
+返回值
+{}
+
+
+
+按照关键词查询
+无需登录
+/uni/searchbykw
+{
+   keyword_lis:[]  // 关键词列表，每个关键词不应包含空格，可以输入多个关键词用空格区分
+}
+返回值
+{
+    keyword_lis:[]
+    result:[
+        {
+            case_id:0
+            title:'' 标题
+        }
+    ]
+}
+
+
+根据时间查询
+无需登录
+/uni/searchbytime
+{
+    limit_year_time:'YYYY' //按年份查询
+}
+返回值
+{
+    result_list:[
+        ctime:'YYYY-MM-DD'
+        title:''
+        case_id:0
+    ]
+}
+
+// 根据年份查询数据
+
+
+/uni/searchbyid
+{
+    case_id:0
+}
+返回值
+{
+    title:''
+    content:''
+    ctime:'YYYY_MM_DD'
+    case_id:0
+    post_items:[
+        ''
+    ]
+    uploader_info:{
+        uuid:0
+        nickname:''
+    }
+
+}
+
+// 根据事件id查询某个具体事件
+
+
+
