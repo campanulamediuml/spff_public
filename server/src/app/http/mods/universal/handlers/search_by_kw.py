@@ -15,9 +15,9 @@ class search_handler(HandlerBase):
         data = self.get_post_data()
         keyword_list = data['keyword_list']
         if self.get_user_base('admin') != None:
-            shown = ('is_show','>',-1)
+            cond = []
         else:
-            shown = ('is_show','=',1)
+            cond = [('is_show','=',1),('is_verified','=',1)]
 
         if keyword_list == []:
             self.send_faild(error.ERROR_PARAM)
@@ -39,7 +39,7 @@ class search_handler(HandlerBase):
 
         title_list = []
         for case_id in case_id_list:
-            res = Data.find('case_info',[('id','=',case_id),shown])
+            res = Data.find('case_info',[('id','=',case_id)]+cond)
             # 需要能显示的才可以看
             if res == None:
                 continue
@@ -50,6 +50,7 @@ class search_handler(HandlerBase):
                 }
                 title_list.append(case_info)
                 continue
+        title_list = list(reversed(title_list))
 
         result = {
             'keyword_list':keyword_list,

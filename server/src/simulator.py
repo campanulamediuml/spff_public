@@ -4,13 +4,14 @@ import time
 from common.common import common_tools
 from config import config
 
-main_url = 'http://spffapi.campanula.wang'
-# main_url = 'http://127.0.0.1:'+ str(config.http_config['port'])
+# main_url = 'http://spff.campanula.wang'
+main_url = 'http://127.0.0.1:'+ str(config.http_config['port'])
 
 class simulator(object):
     def __init__(self):
         self.headers = {
             'token':'d963f3b7206f122699be97b0ae1ea3f0',
+            'Origin':'lo'
         }
         # self.token = '27d105bee92175a2707d8a2534481a8f'
 
@@ -91,15 +92,15 @@ def create_search_id():
 if __name__=='__main__':
 
     sim = simulator()
-    # res = sim.admin_login('campanula','033248hyzh')
-    # print(res)
+    login_info = sim.admin_login('','')
+    print(login_info)
     # data = create_upload_info()
     # sim.upload(data)
     # data = create_search_info()
-    # sim.search_by_kw(data)
+    # res = sim.search_by_kw(data)
     #
     data = create_search_time()
-    res = sim.search_by_time(data)
+    res = json.loads(sim.search_by_time(data))
 
     #
     # data = create_search_id()
@@ -108,4 +109,5 @@ if __name__=='__main__':
 
 
     # print()
-    # print(res)
+    for i in res['data']['result_list']:
+        print(i['case_id'],i['title'])

@@ -81,7 +81,8 @@ def case_info():
         ('content', 'text'),
         ('is_show', 'int', 'default "1"'),
         ('content_md5', 'varchar(128)', 'default ""'),
-        ('event_time','int','default "0"')
+        ('event_time','int','default "0"'),
+        ('is_verified','int','default "0"'),
 
     ]
     Data.create('case_info', colums)

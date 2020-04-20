@@ -4,7 +4,7 @@ from dbmodel import model
 
 model.init_tables()
 params = {
-    'username':'test',
-    'pwhash':common_tools.get_md5('123456')
+    'username':'',
+    'pwhash':common_tools.get_md5('')
 }
 Data.insert('admin',params)

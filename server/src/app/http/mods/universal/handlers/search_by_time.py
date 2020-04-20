@@ -6,14 +6,17 @@ from common.common import common_tools as common
 import time
 import json
 
+from error import error
+
+
 class search_by_time_handler(HandlerBase):
     @run_on_executor
     def post(self):
         data = self.get_post_data()
         if self.get_user_base('admin') != None:
-            shown = ('is_show','>',-1)
+            cond = []
         else:
-            shown = ('is_show','=',1)
+            cond = [('is_show', '=', 1), ('is_verified', '=', 1)]
 
         search_time = data['limit_year_time']
         if search_time != '':
@@ -26,14 +29,13 @@ class search_by_time_handler(HandlerBase):
         condition = [
             ('event_time','>',search_time_stamp_start),
             ('event_time','<',search_time_stamp_end),
-            shown
-        ]
+        ] + cond
 
         res = Data.select('case_info',condition)
         result_list = []
 
         if res == None:
-            self.send_faild('NO_RECORD')
+            self.send_faild(error.ERROR_NO_RESULT)
             return
 
         for line in res:
@@ -43,6 +45,8 @@ class search_by_time_handler(HandlerBase):
                 'case_id':line['id']
             }
             result_list.append(info_line)
+
+        result_list = list(reversed(result_list))
 
         result = {
             'result_list':result_list

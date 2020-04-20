@@ -73,8 +73,9 @@ class http_tools(object):
     @staticmethod
     def search_case_by_case_id(case_id,character='player'):
         cond = [('id','=',case_id)]
-        if character == 'admin':
+        if character != 'admin':
             cond.append(('is_show', '=', 1)),
+            cond.append(('is_verified', '=', 1)),
 
         line = Data.find('case_info', cond)
         if line == None:
@@ -84,10 +85,9 @@ class http_tools(object):
             'case_id': line['id'],
             'content': common_tools.decode_base64(line['content']),
             'c_time': common_tools.time_to_str(line['c_time']).split()[0],
-            'title': line['title'],
+            'title': common_tools.decode_base64(line['title']),
             'uploader_info': http_tools.get_uploader_info(line['user_id']),
             'post_items': http_tools.get_post_items(line['id']),
-
         }
         result = info_line
         return result

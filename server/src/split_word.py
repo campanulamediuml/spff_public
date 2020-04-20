@@ -46,4 +46,18 @@ all_case = Data.select('case_info',[('id','!=',0)])
 for case in all_case:
     split_case_info(case)
 
+from data.server import Data
+from common.common import common_tools as common
+
+def kill_md():
+    all_info = Data.select('case_info',[('id','!=',0)])
+    for line in all_info:
+        res = common.decode_base64(line['title'])
+        # print(res)
+        case_title_list = res.split('.')
+        if len(case_title_list) >=2:
+            if case_title_list[1] == 'md':
+                print(case_title_list[0])
+                new_title = common.get_base64(case_title_list[0].encode('utf-8'))
+                Data.update('case_info',[('id','=',line['id'])],{'title':new_title})
 

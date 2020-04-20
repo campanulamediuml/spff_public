@@ -98,6 +98,8 @@ class HandlerBase(RequestHandler):
         :param data:
         :return:
         """
+        if data is None:
+            data = {}
         result = self.get_result()
         result['data'] = data
         print('<---------请求成功，返回值--------->')
