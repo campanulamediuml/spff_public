@@ -78,14 +78,32 @@ def case_info():
         ('user_id','int','default "0"'),
         ('c_time','int','default "0"'),
         ('title', 'text'),
-        ('content', 'text'),
+        # ('content', 'text'),
         ('is_show', 'int', 'default "1"'),
         ('content_md5', 'varchar(128)', 'default ""'),
+        ('content_hash','varchar(1024)','default ""'),
+        ('content_length','int','default "0"'),
         ('event_time','int','default "0"'),
         ('is_verified','int','default "0"'),
+        ('verifyer','int','default "0"'),
+        # 审核通过者
 
     ]
     Data.create('case_info', colums)
+
+def case_content():
+    Data.query('drop table case_content')
+    colums = [
+        ('id', 'int', 'AUTO_INCREMENT', 'primary key'),
+        # id
+        ('case_id', 'int', 'default "0"'),
+        # 内容id
+        ('content', 'text'),
+        # 内容
+
+    ]
+    Data.create('case_content', colums)
+
 
 def case_post_item():
     Data.query('drop table case_post_item')
@@ -124,6 +142,7 @@ def init_tables():
     case_info()
     case_post_item()
     case_search_index()
+    case_content()
 
 if __name__=='__main__':
     init_tables()

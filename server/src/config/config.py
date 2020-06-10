@@ -32,3 +32,5 @@ file_name=['jpg','jpeg','gif']
 ws_time_out = 15
 # token超时时间
 token_time_out = 60 * 10
+world_init_time = 0
+world_end_time = 9999999999999

@@ -8,8 +8,8 @@ from common.common import common_tools
 from config import config
 
 
-class Base(object):
-    
+class base(object):
+
     def __init__(self, host, user, psw, dbname):
         self._host = host
         self._user = user
@@ -76,7 +76,7 @@ class Base(object):
         # print(tables)
         for table in tables:
             sql = 'show fields from ' + table
-            #
+            # 
             res = self.query(sql)
             self._tables[table] = list(map(lambda x: x[0], res))
 
@@ -98,15 +98,14 @@ class Base(object):
         tail = tail[:-1] + ')'
         sql += tail
 
-        #
+        # 
 
         self.query(sql)
         self.db.commit()
         return
 
-    # 查找数据（单条）
-    def find(self, table, conditions, fields='*', order=None):
-        sql = 'select %s from %s where  ' % (fields, table)
+    def find_info(self, table, conditions, fields, order):
+        sql = 'select %s from %s where  ' % (','.join(fields), table)
         # if conditions == []:
         for unit in conditions:
             value = unit[2]
@@ -122,10 +121,15 @@ class Base(object):
 
         if order is not None:
             sql += 'order by %s %s ' % (order[0], order[1])
+        return sql
+
+    # 查找数据（单条）
+    def find(self, table, conditions, fields=('*',), order=None):
+        sql = self.find_info(table, conditions, fields, order)
 
         sql += " limit 1"
 
-        #
+        # 
         res = self.query(sql)
         if res is None:
             return None
@@ -136,35 +140,20 @@ class Base(object):
         if table not in self._tables:
             self.load_an_table(table)
 
-        if '*' == fields:
+        if fields[0] == '*' and len(fields) == 1:
             fieldList = self._tables[table]
 
         else:
-            fieldList = fields.split(',')
+            fieldList = fields
 
         self.db.commit()
         return dict(zip(fieldList, res[0]))
 
     # 查找数据
-    def select(self, table, conditions, fields='*', order=None):
-        sql = 'select %s from %s where  ' % (fields, table)
+    def select(self, table, conditions, fields=('*',), order=None):
+        sql = self.find_info(table, conditions, fields, order)
 
-        for unit in conditions:
-            value = unit[2]
-            if type("") == type(value):
-                value = "'%s'" % value
-
-            sql = sql + "%s %s %s " % (unit[0], unit[1], value) + "  and "
-
-        if 0 < len(conditions):
-            sql = sql[0: -4]
-        else:
-            sql = sql[:-7]
-
-        if order is not None:
-            sql += 'order by %s %s ' % (order[0], order[1])
-
-        #
+        # 
         res = self.query(sql)
         if res is None:
             return None
@@ -175,10 +164,10 @@ class Base(object):
         if table not in self._tables:
             self.load_an_table(table)
 
-        if '*' == fields:
+        if fields[0] == '*' and len(fields) == 1:
             fieldList = self._tables[table]
         else:
-            fieldList = fields.split(',')
+            fieldList = fields
 
         result = []
         for data in res:
@@ -200,7 +189,7 @@ class Base(object):
                     values = values[:-2] + ")"
 
                 sql += 'insert into %s%s values %s ;' % (table, keys, values)
-            #
+            # 
             self.query(sql)
             if True == isCommit:
                 self.db.commit()
@@ -214,7 +203,7 @@ class Base(object):
                 values = values[:-2] + ")"
 
             sql = 'insert into %s%s values %s ;' % (table, keys, values)
-            #
+            # 
             self.query(sql)
             if True == isCommit:
                 self.db.commit()
@@ -242,7 +231,7 @@ class Base(object):
         if 0 < len(conditions):
             sql = sql[0: -4]
 
-        #
+        # 
         self.query(sql)
         if True == isCommit:
             self.db.commit()
@@ -262,8 +251,8 @@ class Base(object):
             sql = sql[0: -4]
         else:
             sql = sql[:-7]
-        #
-        #
+        # 
+        # 
         self.query(sql)
         if is_commit is True:
             self.db.commit()

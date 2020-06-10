@@ -122,8 +122,9 @@ class common_tools(object):
         # print(*args)
 
     @staticmethod
-    def post(url, payload={}, params={},headers = {},show_headers=True,show_data=True):
-        headers['Content-Type'] = 'application/json'
+    def post(url, payload=None, params=None,headers = None,show_headers=True,show_data=True):
+        if headers is not None:
+            headers['Content-Type'] = 'application/json'
         # try:
         r = common_tools.session.post(url, params=params, json=payload, headers=headers)
         # except:
@@ -143,8 +144,9 @@ class common_tools(object):
             return
 
     @staticmethod
-    def get(url, params={},headers = {}, show_headers=True,show_data=True):
-        headers['Content-Type'] = 'application/json'
+    def get(url, params=None,headers =None, show_headers=True,show_data=True):
+        if headers is not None:
+            headers['Content-Type'] = 'application/json'
         try:
             r = common_tools.session.get(url, params=params, headers=headers)
         except:

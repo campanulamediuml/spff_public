@@ -1,5 +1,7 @@
-from scripts.weibo_bot import weibo_bot
+
 import sys
+
+from sdk.webo_sdk.weibo_api import weibo_bot
 
 print(sys.argv)
 code = sys.argv[1]

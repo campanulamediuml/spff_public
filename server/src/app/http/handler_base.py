@@ -15,6 +15,8 @@ class HandlerBase(RequestHandler):
 
     def set_default_headers(self):
         origin = self.request.headers.get('Origin')
+        remote_ip = self.request.headers.get('X-Forwarded-For')
+        print(remote_ip)
         if origin == None or origin == '':
             origin = '*'
         print('添加响应标头')

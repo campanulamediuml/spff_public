@@ -1,20 +1,39 @@
+import threading
 import time
 import heapq
 from threading import Timer
 import random
-import _thread as thread
+# import _thread as thread
 
 TIME_ACCURACY = 1  # 时间精度，时间精度不是越小越好！你的Task每次循环超过了这个值,将影响准确度
 
-def IntervalTask(sec,func,args=()):
-    def run():
+# def
+
+def IntervalTask(sec,func,args=(),immediatly=True,thread_name = ''):
+    def run(*args):
+        if immediatly is False:
+            time.sleep(sec)
         while 1:
+
             func(*args)
             time.sleep(sec)
+    t = threading.Thread(target=run, args=args)
+    if thread_name != '':
+        t.name = thread_name
+    t.start()
+    # t.join()
 
-    thread.start_new_thread(run, args)
-
-
+def normal_task(sec,func,args=(),thread_name=''):
+    def run(*args):
+        time.sleep(sec)
+        func(*args)
+    t = threading.Thread(target=run, args=args)
+    if thread_name != '':
+        t.name = thread_name
+    t.start()
+    # t.join()
+    # threading.enumerate()
+    # print(threading.enumerate())
 
 
 class Scheduler(object):
@@ -109,25 +128,57 @@ interval:循环周期（单位：秒）
 '''
 
 
-# class IntervalTask(Task):
-#
-#     def __init__(self, interval, func, args=()):
-#         Task.__init__(self, func, args)
-#         self._interval = interval
-#         self._cycle = True
-#         self.start()
+# 使用方法：
+'''
+res = []
+for i in data:
+    r = func(data)
+    res.append(data)
+return res
+=======顺序执行======
 
+res = super_charger(func,data)
+#####增压器#######
+=======加速执行======
+# '''
+class func_engine(threading.Thread):
+    def __init__(self,func,args=()):
+        super(func_engine,self).__init__()
+        self.func = func
+        self.args = args
 
-def test(x, y):
-    print(time.time())
+    def run(self):
+        self.result = self.func(*self.args)
 
-    print(x + y)
+    def get_result(self):
+        try:
+            return self.result
+        except Exception:
+            return None
+    # 并发优化
+def turbo(func,arg_list):
+    # global func_runner
+    # 函数增压器！
+    li = []
+    for i in arg_list:
+        runner = func_engine(func, args = i)
+        li.append(runner)
+        runner.start()
+
+    result = []
+    for i in li:
+        i.join()
+        result.append(i.get_result())
+    return result
+
+# ↓最终加速工具，请调用这个函数
+def super_charger(func,arg_list):
+    return turbo(func,arg_list)
+# ↑最终加速工具，请调用这个函数
+
 
 
 if "__main__" == __name__:
-    Scheduler.run()
-    now = time.time()
-
-    CountdownTask(2, test, (1, 2))
-
-    print("end")
+    # res = [(1,2,3),(4,5,6),(7,8,9)]
+    # print(turbo(foo,res))
+    pass

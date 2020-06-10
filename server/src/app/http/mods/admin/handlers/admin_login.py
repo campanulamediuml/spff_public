@@ -1,10 +1,7 @@
-from werkzeug.security import check_password_hash
-
 from app.http.handler_base import HandlerBase
 from tornado.concurrent import run_on_executor
-
+from app.http.mods.admin.admin_tools import admin_tool
 from app.http.relay.relay import Relay
-from common.common import common_tools
 from data.server import Data
 from error import error
 
@@ -19,8 +16,9 @@ class admin_login(HandlerBase):
         if user == None:
             self.send_faild(error.ERROR_NO_ADMIN)
             return
-        if common_tools.get_md5(pw) != user['pwhash']:
-            self.send_faild(error.ERROR_NO_ADMIN)
+
+        if admin_tool.check_pw(user,pw) is False:
+            self.send_faild(error.ERROR_PW_ERROR)
             return
 
         token = self.login(user['id'],character='admin')
@@ -35,13 +33,13 @@ class admin_login(HandlerBase):
 class admin_logout(HandlerBase):
     @run_on_executor
     def post(self):
-        admin_base = self.get_user_base('admin')
+        admin_base = self.get_user_base(Relay.admin)
         if admin_base == None:
             self.send_faild(error.ERROR_ADMIN_NO_LOGIN)
             return
         self.logout('admin')
         # res = {}
-        if self.get_user_base('admin') != None:
+        if self.get_user_base(Relay.admin) != None:
             self.send_faild(error.ERROR_FAIL)
         else:
             self.send_ok({})

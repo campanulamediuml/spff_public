@@ -8,14 +8,17 @@ class Relay(object):
     server = None
     player_token_dict = {}
     admin_token_dict = {}
+    admin = 'admin'
+    player = 'player'
     token_dict_collection = {
-        'player':player_token_dict,
-        'admin':admin_token_dict
+        admin:player_token_dict,
+        player:admin_token_dict
     }
 
     @staticmethod
     def server_init(server):
         Relay.server = server
+        Data.cache_init()
         _initial_split_word = list(jieba.cut_for_search('server_execute'))
         print('init split word execute')
         # 创建初始用户
@@ -90,7 +93,7 @@ class Relay(object):
         if token in Relay.admin_token_dict:
             return True
 
-        res = Data.find('admin', [('token', '=', token)])
+        res = Data.find(Relay.admin, [('token', '=', token)])
         if res is None:
             return False
 

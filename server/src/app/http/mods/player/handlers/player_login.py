@@ -1,6 +1,8 @@
 
 from app.http.handler_base import HandlerBase
 from tornado.concurrent import run_on_executor
+
+from app.http.relay.relay import Relay
 from sdk.sdk_api import sdk_api
 from data.server import Data
 from error import error
@@ -11,9 +13,6 @@ class player_login(HandlerBase):
     def post(self):
         data = self.get_post_data()
         login_type=[]
-
-
-
 
         try:
             wechat_verify_code = data['code']
@@ -50,13 +49,13 @@ class player_login(HandlerBase):
 class player_logout(HandlerBase):
     @run_on_executor()
     def get(self):
-        admin_base = self.get_user_base('player')
+        admin_base = self.get_user_base(Relay.player)
         if admin_base == None:
             self.send_faild(error.ERROR_PLAYER_NO_LOGIN)
             return
         self.logout('player')
         # res = {}
-        if self.get_user_base('player') != None:
+        if self.get_user_base(Relay.player) != None:
             self.send_faild(error.ERROR_FAIL)
         else:
             self.send_ok({})

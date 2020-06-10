@@ -2,6 +2,7 @@ from tornado.concurrent import run_on_executor
 
 from app.http.handler_base import HandlerBase
 from app.http.http_tools.tools import http_tools as tools
+from app.http.relay.relay import Relay
 
 from error import error
 
@@ -11,7 +12,7 @@ class search_by_case_id(HandlerBase):
     def post(self):
         data = self.get_post_data()
         case_id = data['case_id']
-        if self.get_user_base('admin') != None:
+        if self.get_user_base(Relay.admin) != None:
             character = 'admin'
         else:
             character = 'player'

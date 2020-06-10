@@ -87,8 +87,6 @@ def kill():
     return
 
 def execute_command(command):
-
-
     if command == 'start':
         start()
         return

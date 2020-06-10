@@ -1,6 +1,9 @@
 from tornado.concurrent import run_on_executor
 
 from app.http.handler_base import HandlerBase
+from app.http.http_tools.tools import http_tools
+from app.http.relay.relay import Relay
+from common.constant.case_constant import status_can_show, status_verified
 from data.server import Data
 from common.common import common_tools as common
 import time
@@ -13,10 +16,11 @@ class search_by_time_handler(HandlerBase):
     @run_on_executor
     def post(self):
         data = self.get_post_data()
-        if self.get_user_base('admin') != None:
+        if self.get_user_base(Relay.admin) != None:
+            print(self.get_user_base(Relay.admin))
             cond = []
         else:
-            cond = [('is_show', '=', 1), ('is_verified', '=', 1)]
+            cond = [('is_show', '=', status_can_show ), ('is_verified', '=', status_verified)]
 
         search_time = data['limit_year_time']
         if search_time != '':
@@ -24,29 +28,18 @@ class search_by_time_handler(HandlerBase):
             search_time_stamp_end = common.str_to_time(str(search_time)+'-12-31 23:59:59')
         else:
             search_time_stamp_start = 0
-            search_time_stamp_end = 999999999
+            search_time_stamp_end = int(time.time())
 
         condition = [
             ('event_time','>',search_time_stamp_start),
             ('event_time','<',search_time_stamp_end),
         ] + cond
 
-        res = Data.select('case_info',condition)
-        result_list = []
+        result_list = http_tools.get_case_list_by_cond(condition)
 
-        if res == None:
+        if result_list == None:
             self.send_faild(error.ERROR_NO_RESULT)
             return
-
-        for line in res:
-            info_line = {
-                'c_time':common.time_to_str(line['c_time']).split()[0],
-                'title':common.decode_base64(line['title']),
-                'case_id':line['id']
-            }
-            result_list.append(info_line)
-
-        result_list = list(reversed(result_list))
 
         result = {
             'result_list':result_list

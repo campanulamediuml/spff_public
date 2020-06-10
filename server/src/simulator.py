@@ -1,19 +1,31 @@
 import json
-import time
+import requests
 
 from common.common import common_tools
 from config import config
 
-# main_url = 'http://spff.campanula.wang'
-main_url = 'http://127.0.0.1:'+ str(config.http_config['port'])
+debug = 0
+# debug=1为操作本地服务端
+
+if debug == 0:
+    main_url = 'http://spffapi.campanula.wang'
+else:
+    main_url = 'http://127.0.0.1:'+ str(config.http_config['port'])
 
 class simulator(object):
     def __init__(self):
         self.headers = {
-            'token':'d963f3b7206f122699be97b0ae1ea3f0',
-            'Origin':'lo'
+            'token':'',
         }
-        # self.token = '27d105bee92175a2707d8a2534481a8f'
+        
+    def recver(self,data):
+        if data == None:
+            return
+        data = json.loads(data)
+        if data['code'] != 0:
+            print(data['msg'])
+            return
+        return data['data']
 
     def admin_login(self,user_name,pw):
         url = main_url + '/admin/login'
@@ -21,43 +33,73 @@ class simulator(object):
             'username':user_name,
             'pswd':pw,
         }
-        res = json.loads(common_tools.post(url,payload=data,headers=self.headers))
-        # print(res)
-        self.headers['token'] = res['data']['token']
-        return res
+        res = common_tools.post(url, payload=data, headers=self.headers,show_headers=False,show_data=False)
+        data = self.recver(res)
+        if data == None:
+            return
+        self.headers['token'] = data['token']
+        return data
+    # 管理员登录
 
     def online_admin(self):
         url = main_url + '/test/onlineadmin'
-        res = json.loads(common_tools.get(url,headers=self.headers))
+        res = common_tools.post(url, headers=self.headers,show_headers=False,show_data=False)
         # print(res)
-        return res
+        return self.recver(res)
+    # 查看在线管理员
 
     def admin_logout(self):
         url = main_url + '/admin/logout'
-        res = common_tools.post(url,headers=self.headers)
+        res = common_tools.post(url, headers=self.headers,show_headers=False,show_data=False)
         # print(res)
-        return res
+        return self.recver(res)
+    # 管理员退出
 
     def upload(self,data):
         url = main_url + '/admin/upload'
-        res = common_tools.post(url, payload=data ,headers=self.headers)
-        return res
+        res = common_tools.post(url, payload=data, headers=self.headers,show_headers=False,show_data=False)
+        return self.recver(res)
+    # 管理员上传信息
 
     def search_by_kw(self,data):
         url = main_url + '/uni/searchbykw'
-        res = common_tools.post(url, payload=data, headers=self.headers)
-        return res
+        res = common_tools.post(url, payload=data, headers=self.headers,show_headers=False,show_data=False)
+        return self.recver(res)
+    # 根据关键词查询
 
     def search_by_time(self,data):
         url = main_url + '/uni/searchbytime'
-        res = common_tools.post(url, payload=data, headers=self.headers)
-        return res
+        res = common_tools.post(url, payload=data, headers=self.headers,show_headers=False,show_data=False)
+        return self.recver(res)
+    # 根据时间查询
 
     def search_by_id(self,data):
         url = main_url + '/uni/searchbyid'
-        res = common_tools.post(url, payload=data, headers=self.headers)
-        return res
+        res = common_tools.post(url, payload=data, headers=self.headers,show_headers=False,show_data=False)
+        return self.recver(res)
+    # 根据id获取事件的关键信息
 
+    def check_unverified_case(self):
+        url = main_url + '/admin/checkunverifiedcase'
+        res = common_tools.post(url, headers=self.headers,show_headers=False,show_data=False)
+        return self.recver(res)
+
+    def verify_case_by_id(self,data):
+        url = main_url + '/admin/verifycase'
+        res = common_tools.post(url, payload=data, headers=self.headers, show_headers=False, show_data=False)
+        return self.recver(res)
+
+    def block_case(self,data):
+        url = main_url+'/admin/block'
+        res = common_tools.post(url, payload=data, headers=self.headers, show_headers=False, show_data=False)
+        return self.recver(res)
+
+    def unblock_case(self,data):
+        url = main_url+'/admin/unblock'
+        res = common_tools.post(url, payload=data, headers=self.headers, show_headers=False, show_data=False)
+        return self.recver(res)
+
+# ===================模拟客户端=======================
 
 def create_upload_info():
     data = {
@@ -68,6 +110,7 @@ def create_upload_info():
         ]
     }
     return data
+# 测试信息
 
 def create_search_info():
     data = {
@@ -76,38 +119,62 @@ def create_search_info():
         ]
     }
     return data
+# 测试信息，公安部鲍某某关键词查询
 
 def create_search_time():
     data = {
         'limit_year_time':'2020'
     }
     return data
+# 2020年按时间查询
 
-def create_search_id():
+def create_case_id(case_id):
     data = {
-        'case_id':'1'
+        'case_id':str(case_id)
     }
     return data
+# 按照id获取关键信息
 
 if __name__=='__main__':
-
     sim = simulator()
     login_info = sim.admin_login('','')
     print(login_info)
+    # 管理员身份登录
+    res = sim.check_unverified_case()
+    if res != None:
+        for i in res['result_list']:
+            print(i)
+            print('==========================')
+    # 查看未审核信息
+    data = create_case_id(case_id=101)
+    res = sim.search_by_id(data)
+    print(res)
+    # # 根据id查找信息
+    # data = create_case_id(case_id=93)
+    # res = sim.verify_case_by_id(data)
+    # print(res)
+    # # 根据id进行确认操作
+    # data = create_case_id(case_id=57)
+    # res = sim.unblock_case(data)
+    # print(res)
+    # # 屏蔽操作
+    # # 根据id进行确认操作
+    # data = create_case_id(case_id=104)
+    # res = sim.block_case(data)
+    # print(res)
+    # 屏蔽操作
+# =====================================================
+
+    # case_id =
     # data = create_upload_info()
     # sim.upload(data)
-    # data = create_search_info()
-    # res = sim.search_by_kw(data)
-    #
-    data = create_search_time()
-    res = json.loads(sim.search_by_time(data))
-
-    #
-    # data = create_search_id()
+    # data = create_search_id(40)
     # res = sim.search_by_id(data)
-    #
-
-
-    # print()
-    for i in res['data']['result_list']:
+    # print(res)
+    # #
+    data = create_search_time()
+    res = sim.search_by_time(data)
+    print(res)
+    for i in res['result_list']:
         print(i['case_id'],i['title'])
+        print('===========================================')

@@ -4,7 +4,8 @@ import time
 
 import jieba
 import requests
-from common.common import common_tools 
+from common.common import common_tools
+from common.constant.case_constant import statu_post_item_download, status_can_show, status_verified
 from config import config
 from data.server import Data
 
@@ -18,7 +19,7 @@ class http_tools(object):
                 'post_item':item_url,
                 'c_time':int(time.time()),
                 'raw_url':item,
-                'is_download':1,
+                'is_download':statu_post_item_download,
             }
             Data.insert('case_post_item',params)
 
@@ -30,13 +31,11 @@ class http_tools(object):
             r = requests.get(item_url)
             content = str(r.content)
             file_name = common_tools.get_md5(content)
-
             running_path =os.path.abspath('.')
             path = running_path.split('/')
             client_path = path[:-2]
             client_path.append(config.file_path)
             client_path = '/'.join(client_path)
-
             open(client_path+file_name+'.'+file_tail,'wb').write(r.content)
             item_url = config.file_url+file_name+'.'+file_tail
 
@@ -51,6 +50,7 @@ class http_tools(object):
         content_list = list(jieba.cut_for_search(content))
         case_list = title_list+content_list
         case_word_list = list(set(case_list))
+        # 分割关键词
 
         # print(case_list)
         for word in case_word_list:
@@ -74,8 +74,8 @@ class http_tools(object):
     def search_case_by_case_id(case_id,character='player'):
         cond = [('id','=',case_id)]
         if character != 'admin':
-            cond.append(('is_show', '=', 1)),
-            cond.append(('is_verified', '=', 1)),
+            cond.append(('is_show', '=', status_can_show)),
+            cond.append(('is_verified', '=', status_verified)),
 
         line = Data.find('case_info', cond)
         if line == None:
@@ -83,7 +83,7 @@ class http_tools(object):
 
         info_line = {
             'case_id': line['id'],
-            'content': common_tools.decode_base64(line['content']),
+            'content': http_tools.get_content_by_case_id(line['id']),
             'c_time': common_tools.time_to_str(line['c_time']).split()[0],
             'title': common_tools.decode_base64(line['title']),
             'uploader_info': http_tools.get_uploader_info(line['user_id']),
@@ -91,6 +91,14 @@ class http_tools(object):
         }
         result = info_line
         return result
+
+    @staticmethod
+    def get_content_by_case_id(case_id):
+        line = Data.find('case_content',[('case_id','=',case_id)])
+        if line is None:
+            return
+        return common_tools.decode_base64(line['content'])
+
 
 
     @staticmethod
@@ -112,3 +120,21 @@ class http_tools(object):
                 result.append(line['post_item'])
 
         return result
+
+    @staticmethod
+    def get_case_list_by_cond(cond):
+        result_list = []
+        res = Data.select('case_info', cond)
+        if res == None:
+            return
+        # 没有结果就返回none
+        for line in res:
+            info_line = {
+                'c_time':common_tools.time_to_str(line['c_time']).split()[0],
+                'title':common_tools.decode_base64(line['title']),
+                'case_id':line['id']
+            }
+            result_list.append(info_line)
+
+        result_list = list(reversed(result_list))
+        return result_list

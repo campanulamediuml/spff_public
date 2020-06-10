@@ -1,6 +1,6 @@
 import time
 
-from data.dbserver.base import Base
+from data.dbserver.base import base as Base
 # from config.config import db_config
 from common.common import common_tools
 from common.Scheduler import IntervalTask
@@ -10,7 +10,7 @@ class data_manager(object):
         self.t_data = db_config
         self.sql_pool = {}
 
-        sql = self._create_new_sql()
+        sql = self.create_new_sql()
         self.add_new_sql(sql)
         print('创建首批数据库链接实例')
         IntervalTask(10,self.keep_connect)
@@ -38,7 +38,7 @@ class data_manager(object):
                 sql.become_busy()
                 return sql
         print('数据库连接池全忙状态，创建新的数据库链接')
-        sql = self._create_new_sql()
+        sql = self.create_new_sql()
         sql.become_busy()
         self.add_new_sql(sql)
         print('创建完毕')
@@ -50,16 +50,12 @@ class data_manager(object):
         return
 
 
-    def _create_new_sql(self):
+    def create_new_sql(self):
         sql = Base(self.t_data['host'], self.t_data['user'], self.t_data['password'], self.t_data['database'])
         # sql.become_busy()
         # self.sql_pool.append(sql)
         return sql
 
-    def new(self):
-        sql = Base(self.t_data['host'], self.t_data['user'], self.t_data['password'], self.t_data['database'])
-        self.sql_pool[id(sql)] = sql
-        return id(sql)
 
     def get_tables(self):
         sql = self.find_free_sql()
@@ -88,7 +84,7 @@ class data_manager(object):
         return result
 
 
-    def find(self,table, conditions, fields='*', order=None):
+    def find(self,table, conditions,fields=('*',), order=None):
         sql = self.find_free_sql()
         # sql.become_busy()
         # print('执行这次sql请求的链接是', id(sql))
@@ -97,7 +93,7 @@ class data_manager(object):
         return result
 
 
-    def select(self,table, conditions, fields='*', order=None):
+    def select(self,table, conditions, fields=('*',), order=None):
         sql = self.find_free_sql()
         # sql.become_busy()
         # print('执行这次sql请求的链接是', id(sql))
@@ -134,11 +130,18 @@ class data_manager(object):
 
 
 
+
     def query(self,sql_query):
+        # print(sql)
         sql = self.find_free_sql()
+        # sql.become_busy()
         print('执行这次sql请求的链接是', id(sql))
         result = sql.query(sql_query)
         sql.become_free()
         return result
 
+    # @staticmethod
+    # def truncate(table):
+    #     # print(sql)
+    #     return Data.sql.truncate(table)
 

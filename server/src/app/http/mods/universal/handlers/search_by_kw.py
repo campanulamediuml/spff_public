@@ -1,6 +1,8 @@
 from tornado.concurrent import run_on_executor
 
 from app.http.handler_base import HandlerBase
+from app.http.relay.relay import Relay
+from common.constant.case_constant import status_verified, status_can_show
 from data.server import Data
 from common.common import common_tools as common, common_tools
 import time
@@ -14,10 +16,10 @@ class search_handler(HandlerBase):
     def post(self):
         data = self.get_post_data()
         keyword_list = data['keyword_list']
-        if self.get_user_base('admin') != None:
+        if self.get_user_base(Relay.admin) != None:
             cond = []
         else:
-            cond = [('is_show','=',1),('is_verified','=',1)]
+            cond = [('is_show','=',status_can_show ),('is_verified','=',status_verified)]
 
         if keyword_list == []:
             self.send_faild(error.ERROR_PARAM)

@@ -1,9 +1,8 @@
 from tornado.concurrent import run_on_executor
-
 from app.http.handler_base import HandlerBase
+from app.http.mods.admin.admin_tools import admin_tool
 from data.server import Data
-from common.common import common_tools as common
-import time
+
 
 from error import error
 
@@ -23,12 +22,12 @@ class change_pw(HandlerBase):
             self.send_faild(error.ERROR_PW_DIFF)
             return
 
-        if common.get_md5(data['pw_old']) != user_base['pwhash']:
+        if admin_tool.check_pw(user_base,data['pw_old']) is False:
             self.send_faild(error.ERROR_PW_ERROR)
             return
 
         params = {
-            'pwhash':common.get_md5(data['pw_1'])
+            'pwhash':admin_tool.create_pw(data['pw_1'])
         }
         Data.update(character,[('id','=',user_base['id'])],params)
         self.send_ok({})

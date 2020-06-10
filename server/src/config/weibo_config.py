@@ -1,4 +1,4 @@
 client_id = ''
 client_secret=''
-app_uri='http://apps.weibo.com/campanulamediuml'
+app_uri=''
 polling_time = 60
