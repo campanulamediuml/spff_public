@@ -1,8 +1,12 @@
 from tornado.concurrent import run_on_executor
 
 from app.http.handler_base import HandlerBase
+from app.http.http_tools.tools import http_tools
+from app.http.mods.admin.admin_tools import admin_tool
 from app.http.relay.relay import Relay
 # 隐藏某一条记录，需要管理员身份才能操作
+from common.constant.case_constant import status_canot_show
+from data.server import Data
 from error import error
 
 
@@ -15,12 +19,15 @@ class update_info(HandlerBase):
             self.send_faild(error.ERROR_ADMIN_NO_LOGIN)
             return
 
-        case_id = data['case_id']
-        new_case_info = data['new_case_info']
-        title = data['new_case_title']
-        pic_list = data['pic_list']
-
-
-        # Data.update('case_info',[('id','=',data['case_id'])],{'is_show':0})
-        self.send_ok({})
-        return
+        res = admin_tool.upload_case(data, user_base)
+        data_id_old = data['case_id']
+        # 上传信息，并且block旧的信息
+        Data.update('case_info',[('id','=',data_id_old)],{'is_show':status_canot_show })
+        if res != None:
+            self.send_ok({})
+            http_tools.write_event_post_item(data, res)
+            print('download_done!')
+            return
+        else:
+            self.send_faild(error.ERROR_FAIL)
+            return

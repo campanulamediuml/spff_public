@@ -12,7 +12,7 @@ class admin_login(HandlerBase):
         username = data['username']
         pw = data['pswd']
 
-        user = Data.find('admin',[('username','=',username)])
+        user = Data.find(Relay.admin,[('username','=',username)])
         if user == None:
             self.send_faild(error.ERROR_NO_ADMIN)
             return
@@ -21,7 +21,7 @@ class admin_login(HandlerBase):
             self.send_faild(error.ERROR_PW_ERROR)
             return
 
-        token = self.login(user['id'],character='admin')
+        token = self.login(user['id'],character=Relay.admin)
         res = {
             'token':token
         }

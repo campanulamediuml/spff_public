@@ -3,13 +3,14 @@ import time
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.http.http_tools.tools import http_tools
+from common.constant import case_constant
 from data.server import Data
 from common.common import common_tools as common, common_tools
 
 
 class admin_tool():
     @staticmethod
-    def upload_case(data,user_base):
+    def upload_case(data,user_base,uploader_type=case_constant.uploader_type_admin):
         content = common.get_base64(data['content'].encode('utf-8'))
         content_md5 = common.get_md5(content)
         user_id = user_base['id']
@@ -17,7 +18,6 @@ class admin_tool():
         event_time = common.str_to_time(data['event_time'] + ' 00:00:00')
         title = common.get_base64(data['title'].encode('utf-8'))
         if Data.find('case_info', [('title', '=', title)]) != None:
-            # self.send_faild(error.ERROR_CASE_EXIST)
             return
         params = {
             'user_id': user_id,
@@ -26,6 +26,7 @@ class admin_tool():
             'content_md5': content_md5,
             'event_time': event_time,
             'title': title,
+            'uploader_type':uploader_type
         }
         Data.insert('case_info', params)
         # 插入主体内容
@@ -60,3 +61,5 @@ class admin_tool():
         pw_md5 = common_tools.get_md5(pw)
         return generate_password_hash(pw_md5)
 
+    # @staticmethod
+    # def update_case(data,user_base):

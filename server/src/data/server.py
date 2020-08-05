@@ -30,7 +30,7 @@ class Data(object):
             normal_task(0, Data.update_cache, (table_name,))
             # Data.update_cache(table_name)
         print('周期刷新缓存完毕')
-        
+
 
     @staticmethod
     def check_connections():
@@ -74,8 +74,8 @@ class Data(object):
     @staticmethod
     def insert(table, params, is_commit=True):
         res = Data.Base.insert(table, params, is_commit)
-        print('触发缓存', table)
-        normal_task(0, Data.update_cache, (table,))
+        # print('触发缓存', table)
+        # normal_task(0, Data.update_cache, (table,))
         return res
 
     @staticmethod
@@ -89,15 +89,15 @@ class Data(object):
     @staticmethod
     def update(table, conditions, params, is_commit=True):
         data = Data.Base.update(table, conditions, params, is_commit)
-        print('触发缓存', table)
-        normal_task(0, Data.update_cache, (table,))
+        # print('触发缓存', table)
+        # normal_task(0, Data.update_cache, (table,))
         return data
 
     @staticmethod
     def delete(table, conditions, is_commit=True):
         res = Data.Base.delete(table, conditions, is_commit)
-        print('触发缓存', table)
-        normal_task(0, Data.update_cache, (table,))
+        # print('触发缓存', table)
+        # normal_task(0, Data.update_cache, (table,))
         return res
 
     @staticmethod

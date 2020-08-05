@@ -9,13 +9,24 @@ from gevent import getcurrent
 from math import radians, sin, cos, asin, sqrt
 import random
 import sys
+import traceback
 
 import json
 
-rand_string = 'qwertyuiopasdfghjklzxcvbnm1234567890'
+def dbg(*args):
+    tracer = traceback.extract_stack()
+    print(common_tools.time_to_str(), '来自', tracer, '调用', *args)
+    # 习惯写*args
+
+
+
+
 
 class common_tools(object):
     session = requests.Session()
+    @staticmethod
+    def get_rand_base():
+        return string.ascii_letters + string.digits
 
     @staticmethod
     def time_to_str(times=time.time()):
@@ -165,9 +176,35 @@ class common_tools(object):
             return
 
 
-if __name__=='__main__':
-    res = common_tools.get_base64('测试'.encode('utf-8'))
-    print(res)
-    res = common_tools.decode_base64(res)
-    print(res)
+    @staticmethod
+    def get_sys_info():
+        return sys.platform
 
+    @staticmethod
+    def print_processing_name():
+        # print(sys.argv)
+        try:
+            server_name = sys.argv[0].split('.')[0]
+            return server_name
+        except:
+            return
+
+    @staticmethod
+    def take_a_break():
+        print(common_tools.time_to_str(),'主播摸鱼去了...')
+
+if __name__=='__main__':
+    # common_tools.take_a_break()
+    res = common_tools.decode_base64('AwYAAIOsREEW8nr8z7TV9AADwTdJI-7M2guCTyo5hnYTd3dgNEM7b7ZoBqeptMqb')
+    print(res)
+    pass
+    # res = common_tools.get_base64('测试'.encode('utf-8'))
+    # print(res)
+    # res = common_tools.decode_base64(res)
+    # print(res)
+    # server_name = common_tools.print_processing_name()
+    # print(server_name)
+    # dbg('测试','test','ceshi')
+    # res = common_tools.get_rand_base()
+    # dbg(res)
+    # dbg_test()

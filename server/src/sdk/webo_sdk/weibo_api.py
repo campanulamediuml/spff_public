@@ -1,6 +1,7 @@
 import json
 import time
 
+from app.http.relay.relay import Relay
 from common.Scheduler import IntervalTask
 from common.common import common_tools
 from config import weibo_config, config
@@ -13,10 +14,10 @@ class weibo_base(object):
     app_uri=weibo_config.app_uri
 
     def __init__(self):
-        self.access_token = ''
+        self.access_token = '2.00Vq3_GCtnLAMB4e27fc0d619_X2yD'
         # self.access_token = ''
         self.end_time = 157679999
-        self.user_uid = ''
+        self.user_uid = '1925539735'
 
     def get_auth(self,code):
         request_url = 'https://api.weibo.com/oauth2/access_token'
@@ -79,7 +80,7 @@ class weibo_bot(object):
         self.wb_img_url='http://wx2.sinaimg.cn/large/'
         self.wb = weibo_base()
         self.code = code
-        self.back_ground_token = Data.find('admin',[('id','=',1)])['token']
+        # self.back_ground_token = Data.find('admin',[('id','=',1)])['token']
 
     def main_polling(self):
         self.weibo_login()
@@ -91,19 +92,23 @@ class weibo_bot(object):
         self.wb.get_auth(self.code)
 
     def polling(self):
-        res = self.wb.get_mentioned_comment()
-        for line in res['comments']:
-            data = self.parse_weibo(line)
-            if data != None:
-                res = self.upload(data)
-                if res != None:
-                    if json.loads(res)['code'] == 0:
-                        print(data)
+        try:
+            res = self.wb.get_mentioned_comment()
+            for line in res['comments']:
+                data = self.parse_weibo(line)
+                if data != None:
+                    res = self.upload(data)
+                    if res != None:
+                        if json.loads(res)['code'] == 0:
+                            print(data)
+        except Exception as e:
+            print(str(e))
+            return
 
     def upload(self, data):
-        url = 'http://127.0.0.1:'+ str(config.http_config['port']) + '/admin/upload'
+        url = 'http://127.0.0.1:'+ str(config.http_config['port']) + '/player/upload'
         header = {
-            'token':Data.find('admin', [('id', '=', 1)])['token']
+            'token':Data.find(Relay.player, [('id', '=', 1)])['token']
         }
         res = common_tools.post(url, payload=data, headers=header,show_data=False,show_headers=False)
         return res

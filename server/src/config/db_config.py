@@ -1,6 +1,6 @@
 db_config = {
     'host': '127.0.0.1',
-    'user': 'root',
+    'user': '',
     'password': '',
     'database': 'spff',
     'port': 3306,

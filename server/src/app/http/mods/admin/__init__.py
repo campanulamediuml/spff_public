@@ -1,6 +1,7 @@
+from app.http.mods.admin.handlers.admin_upload import upload_handler
 from app.http.mods.admin.handlers.block_issue import block_info, unblock_info
 from app.http.mods.admin.handlers.check_case import check_case_handler, verify_case_handler
-from app.http.mods.admin.handlers.upload import upload_handler
+# from app.http.mods.admin.handlers.upload import upload_handler
 from app.http.mods.admin.handlers.change_pw import change_pw
 from app.http.mods.admin.handlers.admin_login import admin_login, admin_logout
 

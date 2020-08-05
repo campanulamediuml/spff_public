@@ -1,3 +1,4 @@
+import random
 import time
 
 from common.common import common_tools
@@ -10,6 +11,7 @@ class Relay(object):
     admin_token_dict = {}
     admin = 'admin'
     player = 'player'
+    all_invite_code = []
     token_dict_collection = {
         admin:player_token_dict,
         player:admin_token_dict
@@ -19,6 +21,7 @@ class Relay(object):
     def server_init(server):
         Relay.server = server
         Data.cache_init()
+        Relay.get_init_invite_code()
         _initial_split_word = list(jieba.cut_for_search('server_execute'))
         print('init split word execute')
         # 创建初始用户
@@ -92,7 +95,6 @@ class Relay(object):
     def is_god(token):
         if token in Relay.admin_token_dict:
             return True
-
         res = Data.find(Relay.admin, [('token', '=', token)])
         if res is None:
             return False
@@ -107,7 +109,43 @@ class Relay(object):
                 return user_id
         return
 
+    @staticmethod
+    def get_init_invite_code():
+        all_code = list(range(100000,999999))
+        all_inviter_info = Data.select('invite_info',[],fields=('invite_code','user_id'))
+        invite_dict = {}
+        for line in all_inviter_info:
+            if line['user_id'] in invite_dict:
+                invite_dict[line['user_id']] = line['invite_code']
+        for i in invite_dict.values():
+            if i in all_code:
+                all_code.remove(i)
+        Relay.all_invite_code = all_code
+        # 清除掉已经存在的邀请码
+        # 初始化邀请码
+        Relay.add_init_inviters_info(invite_dict)
 
+    @staticmethod
+    def add_init_inviters_info(invite_dict):
+        all_player = Data.select(Relay.player,[],fields=('id','username'))
+        for user in all_player:
+            if user['id'] not in invite_dict:
+                invite_code = Relay.create_invite_code()
+                params = {
+                    'user_id':user['id'],
+                    'invite_code':invite_code,
+                    'inviter_id':0
+                }
+                Data.insert(Relay.player,params)
+        # 为初始账号填充数据
+
+
+    @staticmethod
+    def create_invite_code():
+        code = random.choice(Relay.all_invite_code)
+        Relay.all_invite_code.remove(code)
+        return code
+    # 生成邀请码
 
 
 

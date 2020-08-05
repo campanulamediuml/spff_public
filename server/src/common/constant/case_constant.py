@@ -6,3 +6,6 @@ status_verified = 1
 
 status_can_show = 1
 status_canot_show = 0
+
+uploader_type_admin = 0
+uploader_type_player = 1

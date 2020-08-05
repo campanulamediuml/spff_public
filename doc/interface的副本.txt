@@ -43,6 +43,22 @@
 返回值
 {}
 
+用户级提交数据
+需要登录
+/player/upload
+{
+    title:''
+    content:''
+    event_time:'YYYY-MM-DD'
+    post_items:[
+        '',
+        ''//附件，为相关图片url，目前仅支持jpg、jpeg、gif
+    ]
+}
+返回值
+{}
+
+
 
 屏蔽某个案例
 需要登录
@@ -59,7 +75,7 @@
 无需登录
 /uni/searchbykw
 {
-   keyword_lis:[]  // 关键词列表，每个关键词不应包含空格，可以输入多个关键词用空格区分
+   keyword_list:[]  // 关键词列表，每个关键词不应包含空格，可以输入多个关键词用空格区分
 }
 返回值
 {

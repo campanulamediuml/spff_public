@@ -51,6 +51,12 @@ def player():
         # 头像
         ('status', 'int', 'default "0"'),
         # 状态
+        ('token','varchar(128)','default ""'),
+
+
+        ('username','varchar(512)','default ""'),
+        ('pwhash', 'varchar(512)','default ""'),
+        # =========用户支持用户名密码登录
     ]
     Data.create('player', colums)
     # 用户账号
@@ -78,16 +84,14 @@ def case_info():
         ('user_id','int','default "0"'),
         ('c_time','int','default "0"'),
         ('title', 'text'),
-        # ('content', 'text'),
         ('is_show', 'int', 'default "1"'),
         ('content_md5', 'varchar(128)', 'default ""'),
-        ('content_hash','varchar(1024)','default ""'),
-        ('content_length','int','default "0"'),
         ('event_time','int','default "0"'),
         ('is_verified','int','default "0"'),
         ('verifyer','int','default "0"'),
         # 审核通过者
-
+        ('uploader_type','int','default "0"'),
+        # 上传者类型 0-管理员  1-用户
     ]
     Data.create('case_info', colums)
 
@@ -128,6 +132,17 @@ def case_search_index():
     ]
     Data.create('case_search_index', colums)
 
+def invite_info():
+    Data.query('drop table invite_info')
+    colums = [
+        ('id', 'int', 'AUTO_INCREMENT', 'primary key'),
+        ('invite_code', 'int', 'default "0"'),
+        ('user_id', 'int', 'default "0"'),
+        ('inviter_id', 'int', 'default "0"'),
+    ]
+    Data.create('invite_info', colums)
+
+
 
 def refresh_table(table_name,table_struct):
     Data.query('drop table '+table_name)
@@ -136,13 +151,14 @@ def refresh_table(table_name,table_struct):
 
 
 def init_tables():
-    admin()
-    player()
-    operate()
-    case_info()
-    case_post_item()
-    case_search_index()
-    case_content()
+    # admin()
+    # player()
+    # operate()
+    # case_info()
+    # case_post_item()
+    # case_search_index()
+    # case_content()
+    invite_info()
 
 if __name__=='__main__':
     init_tables()

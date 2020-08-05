@@ -104,7 +104,7 @@ class http_tools(object):
     @staticmethod
     def get_uploader_info(user_id):
         # 获取上传者信息
-        res = Data.find('admin', [('id', '=', user_id)])
+        res = Data.find('player', [('id', '=', user_id)])
         result = {
             'nickname': res['username'],
         }
